@@ -47,5 +47,5 @@ class Discord  extends Actor {
       .getOrElse("Unknown user")
   }
 
-  private def publish(img: Image): Unit = DiscordTwitterBot.ACTOR_DISCORD ! Image
+  private def publish(img: Image): Unit = DiscordTwitterBot.ACTOR_TWITTER ! img
 }

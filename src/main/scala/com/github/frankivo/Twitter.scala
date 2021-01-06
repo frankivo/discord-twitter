@@ -11,11 +11,12 @@ class Twitter extends Actor {
 
   private val twitter = TwitterFactory.getSingleton
 
-  private def tweet(img: Image) : Unit = {
-    println(twitter.updateStatus("Test!").getText)
+  private def tweet(img: Image): Unit = {
+    println("tweet!")
+    println(twitter.updateStatus(img.tweet).getText)
   }
 
-  private def tweet(img: String) : Unit = {
+  private def tweet(img: String): Unit = {
     println(twitter.updateStatus(img).getText)
   }
 }
