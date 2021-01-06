@@ -1,5 +1,6 @@
 package com.github.frankivo
 
+import akka.actor.Actor
 import discord4j.common.util.Snowflake
 import discord4j.core.DiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
@@ -16,10 +17,15 @@ object Discord {
   }
 
   def hasChannel(channel: Snowflake): Boolean = CHANNELS.contains(channel.asLong())
+
 }
 
-class Discord {
+class Discord  extends Actor {
   connect()
+
+  override def receive: Receive = {
+    case _ => println("Discord!")
+  }
 
   private def connect(): Unit = {
     val client = DiscordClient.create(Discord.TOKEN)
@@ -41,5 +47,5 @@ class Discord {
       .getOrElse("Unknown user")
   }
 
-  private def publish(img: Image): Unit = println(img)
+  private def publish(img: Image): Unit = DiscordTwitterBot.ACTOR_DISCORD ! Image
 }
