@@ -11,7 +11,5 @@ object DiscordTwitterBot {
 
   def main(args: Array[String]): Unit = {
     println("Hello, Ryan")
-
-    ACTOR_TWITTER ! "Hello Ryan!"
   }
 }
