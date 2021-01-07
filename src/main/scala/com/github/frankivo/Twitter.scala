@@ -5,7 +5,6 @@ import twitter4j.{StatusUpdate, TwitterFactory}
 
 class Twitter extends Actor {
   override def receive: Receive = {
-    case text: String => tweet(text)
     case img: Image => tweet(img)
   }
 
@@ -22,9 +21,5 @@ class Twitter extends Actor {
     println(s"Tweeted: ${status.getText}")
 
     file.delete
-  }
-
-  private def tweet(img: String): Unit = {
-    println(twitter.updateStatus(img).getText)
   }
 }

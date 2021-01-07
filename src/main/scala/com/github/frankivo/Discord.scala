@@ -1,6 +1,5 @@
 package com.github.frankivo
 
-import akka.actor.Actor
 import discord4j.common.util.Snowflake
 import discord4j.core.DiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
@@ -17,15 +16,10 @@ object Discord {
   }
 
   def hasChannel(channel: Snowflake): Boolean = CHANNELS.contains(channel.asLong())
-
 }
 
-class Discord  extends Actor {
+class Discord {
   connect()
-
-  override def receive: Receive = {
-    case _ => println("Discord!")
-  }
 
   private def connect(): Unit = {
     val client = DiscordClient.create(Discord.TOKEN)
