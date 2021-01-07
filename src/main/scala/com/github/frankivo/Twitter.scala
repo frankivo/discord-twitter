@@ -1,7 +1,7 @@
 package com.github.frankivo
 
 import akka.actor.Actor
-import twitter4j.TwitterFactory
+import twitter4j.{StatusUpdate, TwitterFactory}
 
 class Twitter extends Actor {
   override def receive: Receive = {
@@ -13,7 +13,15 @@ class Twitter extends Actor {
 
   private def tweet(img: Image): Unit = {
     println("tweet!")
-    println(twitter.updateStatus(img.tweet).getText)
+
+    val update = new StatusUpdate(img.tweet)
+    val file = img.file
+    update.setMedia(file)
+
+    val status = twitter.updateStatus(update)
+    println(s"Tweeted: ${status.getText}")
+
+    file.delete
   }
 
   private def tweet(img: String): Unit = {
