@@ -28,9 +28,11 @@ class Discord {
     gateway.on(classOf[MessageCreateEvent])
       .filter(e => Discord.hasChannel(e.getMessage.getChannelId))
       .toIterable
-      .forEach(e => {
-        e.getMessage.getAttachments.forEach(a => publish(Image(a.getUrl, username(e))))
-      })
+      .forEach(e =>
+        e.getMessage.getAttachments.forEach(
+          a => publish(Image(a.getUrl, username(e), content(e)))
+        )
+      )
   }
 
   private def username(event: MessageCreateEvent): String = {
@@ -39,6 +41,12 @@ class Discord {
       .toScala
       .flatMap(m => Some(m.getDisplayName))
       .getOrElse("Unknown user")
+  }
+
+  private def content(event: MessageCreateEvent): String = {
+    event
+      .getMessage
+      .getContent
   }
 
   private def publish(img: Image): Unit = DiscordTwitterBot.ACTOR_TWITTER ! img
