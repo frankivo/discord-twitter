@@ -7,10 +7,10 @@ import discord4j.core.event.domain.message.MessageCreateEvent
 import scala.jdk.OptionConverters._
 
 object Discord {
-  val TOKEN: String = sys.env("DISCORD_TOKEN")
+  val TOKEN: String = sys.env("discord4j.token")
 
   val CHANNELS: Seq[Long] = {
-    sys.env("DISCORD_CHANNELS")
+    sys.env("discord4j.channels")
       .split(",")
       .map(_.toLong)
   }
