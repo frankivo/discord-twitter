@@ -4,10 +4,11 @@ import discord4j.common.util.Snowflake
 import discord4j.core.DiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
 
-import scala.jdk.OptionConverters._
+import scala.jdk.OptionConverters.RichOptional
 
 object Discord {
   val TOKEN: String = sys.env("discord4j.token")
+  val DEBUG: Boolean = sys.env.getOrElse("discord4j.debug", "false").toBoolean
 
   val CHANNELS: Seq[Long] = {
     sys.env("discord4j.channels")
@@ -26,13 +27,24 @@ class Discord {
     val gateway = client.login().block()
 
     gateway.on(classOf[MessageCreateEvent])
-      .filter(e => Discord.hasChannel(e.getMessage.getChannelId))
-      .toIterable
-      .forEach(e =>
-        e.getMessage.getAttachments.forEach(
-          a => publish(Image(a.getUrl, username(e), content(e)))
+      .subscribe(e => handle(e))
+  }
+
+  def handle(event: MessageCreateEvent): Unit = {
+    if (!Discord.hasChannel(event.getMessage.getChannelId))
+      return
+
+    if (Discord.DEBUG)
+      println(event)
+
+    event
+      .getMessage
+      .getAttachments
+      .forEach(a => {
+        publish(
+          Image(a.getUrl, username(event), content(event))
         )
-      )
+      })
   }
 
   private def username(event: MessageCreateEvent): String = {
