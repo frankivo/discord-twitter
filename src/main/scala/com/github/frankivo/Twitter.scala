@@ -11,8 +11,6 @@ class Twitter extends Actor {
   private val twitter = TwitterFactory.getSingleton
 
   private def tweet(img: Image): Unit = {
-    println("tweet!")
-
     val update = new StatusUpdate(img.tweet)
     val file = img.file
     update.setMedia(file)
