@@ -13,6 +13,7 @@ object Discord {
   val CHANNELS: Seq[Long] = {
     sys.env("discord4j.channels")
       .split(",")
+      .toIndexedSeq
       .map(_.toLong)
   }
 
