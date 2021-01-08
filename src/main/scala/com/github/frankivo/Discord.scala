@@ -11,13 +11,16 @@ object Discord {
   val DEBUG: Boolean = sys.env.getOrElse("discord4j.debug", "false").toBoolean
 
   val CHANNELS: Seq[Long] = {
-    sys.env("discord4j.channels")
+    sys.env.getOrElse("discord4j.channels", "")
       .split(",")
       .toIndexedSeq
-      .map(_.toLong)
+      .flatMap(_.toLongOption)
   }
 
-  def hasChannel(channel: Snowflake): Boolean = CHANNELS.contains(channel.asLong())
+  def hasChannel(channel: Snowflake): Boolean = {
+    if (CHANNELS.isEmpty) return true
+    CHANNELS.contains(channel.asLong())
+  }
 }
 
 class Discord {
