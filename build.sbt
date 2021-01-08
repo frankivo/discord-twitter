@@ -12,7 +12,7 @@ libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.7"
 scalacOptions := Seq("-unchecked", "-deprecation")
 
 assemblyMergeStrategy in assembly := {
-  case "module-info.class" => MergeStrategy.discard
-  case io if io.contains("io.netty.versions.properties") => MergeStrategy.discard
+  case "module-info.class" => MergeStrategy.concat
+  case "META-INF/io.netty.versions.properties" => MergeStrategy.concat
   case x => (assemblyMergeStrategy in assembly).value(x)
 }
